@@ -26,7 +26,7 @@ public class WebhookService {
     @Transactional
     public void saveWebhook(JsonNode json) {
         try {
-            String eventType = json.get("eventType").asText();
+            String eventType = json.get("type").asText("UNKNOWN");
             JsonNode data = json.get("data");
             String paymentKey = data.get("paymentKey").asText();
 
@@ -45,7 +45,7 @@ public class WebhookService {
             e.printStackTrace();
             try {
                 WebhookVO log = new WebhookVO();
-                log.setEventType(json.has("eventType") ? json.get("eventType").asText() : "UNKNOWN");
+                log.setEventType(json.has("type") ? json.get("type").asText() : "UNKNOWN");
                 log.setPaymentNo(null);
                 log.setPayload(json.toString());
                 log.setProcessed(false);

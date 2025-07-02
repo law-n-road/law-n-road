@@ -5,6 +5,7 @@ import com.lawnroad.advertisement.dto.AdvertisementDetailResponseDto;
 import com.lawnroad.advertisement.dto.AdvertisementListResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,9 @@ public interface AdMapper {
   
   // 삭제 메서드
   void deleteAd(@Param("adNo") Long adNo);
+
+  @Update("UPDATE ad_purchase SET ad_status = 0 WHERE ad_status = 1 AND end_date < CURDATE()")
+  void releaseClientStop();
+
+
 }

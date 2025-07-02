@@ -42,8 +42,6 @@
           AND status = 0
     </update>
 
-
-
     <select id="selectPenalizedChatReports" resultType="com.lawnroad.account.dto.ChatReportConfirmDto">
         SELECT
             cr.no,
@@ -55,10 +53,7 @@
             cr.created_at       AS createdAt
         FROM chat_report cr inner join client cl on cr.nickname = cl.nickname where is_stopped = 0;
 
-
-
     </select>
-
 
     <update id="updateClientPenalty">
         UPDATE client
@@ -68,17 +63,12 @@
         WHERE no = #{userNo}
     </update>
 
-
-
     <update id="updateReportStatus" parameterType="long">
         UPDATE chat_report
         SET report_status = 1
         WHERE no = #{reportNo}
           AND report_status = 0
     </update>
-
-
-
 
     <update id="releaseClientStop">
         UPDATE client

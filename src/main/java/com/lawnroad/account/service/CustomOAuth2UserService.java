@@ -22,6 +22,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserMapper userMapper;
     private final ClientMapper clientMapper;
 
+
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest)
             throws OAuth2AuthenticationException {
@@ -53,6 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             client.setPhone(phone);
             client.setContent(1);
             client.setAlert_content(1);
+            client.setIs_consult_alert(1);
             client.setSocial_id(naverId); // 소셜 ID 저장
 
             clientMapper.insertClientBySocial(client);

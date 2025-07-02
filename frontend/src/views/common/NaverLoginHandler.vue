@@ -8,6 +8,7 @@ const route = useRoute()
 const router = useRouter()
 
 onMounted(() => {
+
   const { token, refresh, nickname,no } = route.query
 
   if (token && refresh) {

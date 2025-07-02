@@ -4,6 +4,7 @@ import com.lawnroad.account.Oauth2.OAuth2SuccessHandler;
 import com.lawnroad.account.security.JwtAuthenticationFilter;
 import com.lawnroad.account.service.CustomOAuth2UserService;
 import com.lawnroad.common.util.JwtTokenUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -94,6 +95,7 @@ public class SecurityConfig {
 //    }
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    System.out.println("✅✅✅ 소셜 로그인 핸들러 진입 확인 ✅✅✅");
     http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> {})
@@ -104,7 +106,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                             "/uploads/**", "/api/webhook/**", "/api/signuplawyer",
                             "/login/oauth2/**", "/oauth2/**", "/api/confirm/cancel",  "/ws/**"
                     ).permitAll()
-                
+
                     .requestMatchers("/api/ai/**", "/api/lawyer/*/slots", "/api/confirm/payment","/api/refresh")
                 
                     .hasAnyRole("CLIENT", "LAWYER")
@@ -119,12 +121,19 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .oauth2Login(oauth2 -> oauth2
                     .userInfoEndpoint(userInfo -> userInfo
                             .userService(customOAuth2UserService))
-                    .successHandler((AuthenticationSuccessHandler) oAuth2SuccessHandler) // ✅ 소셜 로그인 성공 처리
+                    .successHandler(oAuth2SuccessHandler) // ✅ 소셜 로그인 성공 처리
             )
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    System.out.println("✅✅✅ 소셜 로그인 핸들러 진입 끝 ✅✅✅");
 
-    return http.build();
-}
+        return http.build();
+    }
+
+    @PostConstruct
+    public void checkHandler() {
+        System.out.println("✅✅ OAuth2SuccessHandler 등록 확인111: " + oAuth2SuccessHandler);
+    }
+
 
 
 

@@ -2,14 +2,11 @@ package com.lawnroad.account.controller;
 
 
 import com.lawnroad.account.service.MailService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+//@CrossOrigin(origins = "https://example.com")
 @RestController
 @RequestMapping("/mail")
 public class MailController {

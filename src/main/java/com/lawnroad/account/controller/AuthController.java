@@ -92,22 +92,6 @@ public class AuthController {
         return ResponseEntity.ok().body("회원가입 완료");
     }
 
-//    @PostMapping("/auth/lawyer_signup")
-//    public ResponseEntity<?> lawyer_signup(@RequestBody LawyerSignupRequest request) {
-//        lawyerService.registerLawyer(request);
-//        return ResponseEntity.ok().body("변호사 회원가입 완료");
-//    }
-
-//    @PostMapping(value = "/signuplawyer", consumes = "multipart/form-data")
-//    public ResponseEntity<?> lawyerSignup(
-//            @ModelAttribute LawyerSignupRequest request,
-//            @RequestPart("profileImage") MultipartFile profileImage,
-//            @RequestPart("idCardFront") MultipartFile idCardFront,
-//            @RequestPart("idCardBack") MultipartFile idCardBack
-//    ) {
-//        lawyerService.registerLawyer(request, profileImage, idCardFront, idCardBack);
-//        return ResponseEntity.ok("변호사 회원가입 완료");
-//    }
 @PostMapping(
         value = "/signuplawyer",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -137,103 +121,6 @@ public ResponseEntity<?> lawyerSignup(
 
         return ResponseEntity.ok(response);
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-//        try {
-//            ClientEntity client = clientService.login(request.getClientId(), request.getPassword());
-//
-//            //ClientEntity client = clientMapper.findByClientId(clientId);
-//            UserEntity user = userMapper.findByNo(client.getNo());
-//            String accessToken = jwtTokenUtil.generateAccessToken(client.getClientId(),client.getNo(),user.getType(),client.getNickname());
-//            String refreshToken = jwtTokenUtil.generateRefreshToken(client.getClientId());
-//
-//            // 🔍 여기에서 확인
-//            System.out.println("✅ Access Token: " + accessToken);
-//            //jwtTokenUtil.printPayload(accessToken); // 👈 payload 출력
-//
-//
-//            jwtTokenUtil.storeRefreshToken(client.getClientId(), refreshToken);
-//
-//            Map<String, Object> result = new HashMap<>();
-//            result.put("accessToken", accessToken);
-//            result.put("refreshToken", refreshToken);
-//            result.put("name", client.getName());
-//            result.put("nickname", client.getNickname());
-//            result.put("role", user.getType());
-//
-//            return ResponseEntity.ok(result);
-//
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-//        }
-//    }
-
-//    @PostMapping("/auth/login")
-//    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-//        try {
-//            System.out.println("💡 [전체 로그인 요청 도착] clientId: " + request.getClientId());
-//            System.out.println("💡 [전체 로그인 요청 도착] type: " + request.getType());
-//
-//            String type = request.getType();
-//            if (type == null) {
-//                return ResponseEntity.badRequest().body("사용자 유형이 지정되지 않았습니다.");
-//            }
-//
-//            if (type.equalsIgnoreCase("CLIENT")) {
-//                ClientEntity client = clientService.login(request.getClientId(), request.getPassword());
-//                UserEntity user = userMapper.findByNo(client.getNo());
-//
-//                String accessToken = jwtTokenUtil.generateAccessToken(client.getClientId(), client.getNo(), user.getType(), client.getNickname());
-//                String refreshToken = jwtTokenUtil.generateRefreshToken(client.getClientId());
-//                jwtTokenUtil.storeRefreshToken(client.getClientId(), refreshToken);
-//
-//                jwtTokenUtil.printPayload(accessToken);
-//
-//
-//                System.out.println("accessToken : " + accessToken);
-//                System.out.println("refreshToken : " + refreshToken);
-//                Map<String, Object> result = new HashMap<>();
-//                result.put("accessToken", accessToken);
-//                result.put("refreshToken", refreshToken);
-//                result.put("name", client.getName());
-//                result.put("nickname", client.getNickname());
-//                result.put("no",user.getNo());
-//                result.put("role", user.getType());
-//                return ResponseEntity.ok(result);
-//
-//            }
-//
-//            else if (type.equalsIgnoreCase("lawyer")) {
-//                // 🔽 LawyerService 에 login 함수 구현 필요
-//                LawyerEntity lawyer = lawyerService.login(request.getClientId(), request.getPassword());
-//                UserEntity user = userMapper.findByNo(lawyer.getNo());
-//                System.out.println("dfdfsdfksdfjkhdsksdjkhfjkdshfjkdhf");
-//
-//                System.out.println("로그인 요청: " + request.getClientId() + ", " + request.getType());
-//                System.out.println("lawyer.getNo(): " + lawyer.getNo());
-//
-//                String accessToken = jwtTokenUtil.generateAccessToken(lawyer.getLawyerId(), lawyer.getNo(), user.getType(), lawyer.getName());
-//                String refreshToken = jwtTokenUtil.generateRefreshToken(lawyer.getLawyerId());
-//                jwtTokenUtil.storeRefreshToken(lawyer.getLawyerId(), refreshToken);
-//                jwtTokenUtil.printPayload(accessToken);
-//
-//                Map<String, Object> result = new HashMap<>();
-//                result.put("accessToken", accessToken);
-//                result.put("refreshToken", refreshToken);
-//                result.put("name", lawyer.getName());
-//                result.put("nickname", lawyer.getName()); // nickname 필드 없으면 name 대체
-//                result.put("role", user.getType());
-//
-//                return ResponseEntity.ok(result);
-//            }
-//
-//            return ResponseEntity.badRequest().body("알 수 없는 사용자 유형입니다.");
-//
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-//        }
-//    }
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -328,17 +215,7 @@ public ResponseEntity<?> lawyerSignup(
         return ResponseEntity.ok(result);
     }
 
-//    //비번찾기
-//    @PostMapping("/reset-password")
-//    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
-//        boolean success = clientService.resetPassword(request.getEmail(), request.getNewPassword());
-//
-//        if (!success) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 이메일로 등록된 계정이 없습니다.");
-//        }
-//
-//        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
-//    }
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
@@ -361,45 +238,7 @@ public ResponseEntity<?> lawyerSignup(
         return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
     }
 
-//    @PutMapping("/client/nickname")
-//    @PreAuthorize("hasRole('CLIENT')")
-//    public ResponseEntity<?> updateNickname(
-//            @RequestHeader("Authorization") String authHeader,
-//            @RequestBody Map<String, String> request
-//    ) {
-//        String token = authHeader.replace("Bearer ", "");
-//        Claims claims = jwtTokenUtil.parseToken(token);
-//        System.out.println("✅ 닉네임 수정 컨트롤러 진입");
-//
-//        String clientId = claims.getSubject(); // sub → clientId
-//        String newNickname = request.get("nickname");
-//
-//        if (newNickname == null || newNickname.trim().isEmpty()) {
-//            return ResponseEntity.badRequest().body("닉네임은 필수입니다.");
-//        }
-//
-//        clientService.updateNicknameByClientId(clientId, newNickname);
-//        return ResponseEntity.ok().build();
-//    }
 
-
-//    @PutMapping("/lawyer/info")
-//    //@PreAuthorize("hasRole('LAWYER')")
-//    public ResponseEntity<?> updateLawyerInfo(
-//            @RequestHeader("Authorization") String authHeader,
-//            @RequestBody Map<String, String> request
-//    ) {
-//        String token = authHeader.replace("Bearer ", "");
-//        Claims claims = jwtTokenUtil.parseToken(token);
-//        String lawyerId = claims.getSubject();
-//
-//        String officeNumber = request.get("officeNumber");
-//        String phone = request.get("phone");
-//        String detailAddress = request.get("detailAddress");
-//
-//        lawyerService.updateLawyerInfo(lawyerId, officeNumber, phone, detailAddress);
-//        return ResponseEntity.ok().build();
-//    }
 
 
     @GetMapping("/client/profile")
@@ -463,68 +302,6 @@ public ResponseEntity<?> lawyerSignup(
     }
 
 
-
-
-
-//    @GetMapping("/refresh")
-//    public ResponseEntity<?> refreshAccessToken(@RequestParam("no") Long no) {
-//        System.out.println("🔄 [리프레시 요청] 사용자 no: " + no);
-//
-//        try {
-//            // DB에서 사용자 정보 조회
-//            String sql = "SELECT client_id, role, nickname FROM client WHERE no = ?";
-//            Map<String, Object> user = jdbcTemplate.queryForMap(sql, no);
-//
-//            String clientId = (String) user.get("client_id");
-//            String role = (String) user.get("role");
-//            String nickname = (String) user.get("nickname");
-//
-//            // accessToken 발급
-//            String newAccessToken = jwtTokenUtil.generateAccessToken(clientId, no, role, nickname);
-//            System.out.println("✅ 재발급 완료: " + newAccessToken);
-//
-//            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
-//        } catch (EmptyResultDataAccessException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 없음");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("재발급 오류");
-//        }
-//    }
-
-
-//    @PostMapping("/refresh")
-//    public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, Object> payload) {
-//        Long no = Long.valueOf(payload.get("no").toString());
-//        System.out.println("🔄 [리프레시 요청] 사용자 no: " + no);
-//
-//        try {
-//            // ✅ user.type을 role로 alias 지정
-//            String sql = "SELECT c.client_id, c.nickname, u.type AS role " +
-//                    "FROM client c " +
-//                    "JOIN user u ON c.no = u.no " +
-//                    "WHERE c.no = ?";
-//
-//            Map<String, Object> user = jdbcTemplate.queryForMap(sql, no);
-//            System.out.println("✅ 쿼리문 통과");
-//
-//            String clientId = (String) user.get("client_id");
-//            String nickname = (String) user.get("nickname");
-//            String role = (String) user.get("role");  // u.type을 role로 사용
-//            System.out.println("🎯 사용자 정보: " + clientId + " / " + role + " / " + nickname);
-//
-//            // ✅ accessToken 재발급
-//            String newAccessToken = jwtTokenUtil.generateAccessToken(clientId, no, role, nickname);
-//            System.out.println("✅ 재발급 완료: " + newAccessToken);
-//
-//            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
-//        } catch (EmptyResultDataAccessException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("❌ 사용자 없음");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ 토큰 재발급 실패");
-//        }
-//    }
-
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, Object> payload) {
         Long no = Long.valueOf(payload.get("no").toString());
@@ -579,9 +356,6 @@ public ResponseEntity<?> lawyerSignup(
         }
     }
 
-
-
-
     @PutMapping("/lawyer/info")
     public ResponseEntity<?> updateLawyerProfile(
             @RequestHeader("Authorization") String authHeader,
@@ -599,9 +373,6 @@ public ResponseEntity<?> lawyerSignup(
         String zipcode = request.get("zipcode");
         String roadAddress = request.get("roadAddress");
         String landAddress = request.get("landAddress");
-
-
-
 
         if (officeNumber == null || phone == null || detailAddress == null ||
                 officeNumber.trim().isEmpty() || phone.trim().isEmpty() || detailAddress.trim().isEmpty()) {
@@ -637,5 +408,10 @@ public ResponseEntity<?> lawyerSignup(
         return ResponseEntity.ok(res);
     }
 
+    @DeleteMapping("/lawyer/withdraw/{userNo}")
+    public ResponseEntity<Void> withdrawLawyer(@PathVariable Long userNo) {
+        lawyerService.lawyer_withdraw(userNo);
+        return ResponseEntity.ok().build();
+    }
 
 }

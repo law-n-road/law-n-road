@@ -74,6 +74,7 @@ async function requestEmailCode() {
       params: { email: email.value }
     });
 
+
     alert("✅ 인증번호가 전송되었습니다.");
   } catch (err) {
     console.error("이메일 인증 요청 중 오류:", err);

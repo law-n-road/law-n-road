@@ -16,17 +16,12 @@
     </select>
 
 
-
-
-
     <!--    <select id="findByEmail" resultType="com.lawnroad.account.entity.ClientEntity">-->
     <!--        SELECT * FROM client WHERE email = #{email}-->
     <!--    </select>-->
 
-
-
     <select id="findByLawyerId" resultType="LawyerEntity">
-        SELECT * FROM lawyer WHERE lawyer_id = #{lawyerId}
+        SELECT * FROM lawyer WHERE lawyer_id = #{lawyerId} and status  = 'APPROVED_JOIN';
     </select>
 
 
@@ -76,37 +71,24 @@
         WHERE lawyer_id = #{lawyerId}
     </update>
 
-
-
-
-    <select id="selectLawyerList" resultType="com.lawnroad.account.dto.LawyerDTO">
+    <select id="selectAllLawyers" resultType="com.lawnroad.account.dto.LawyerDTO">
         SELECT
-        no,
-        name,
-        lawyer_id AS lawyerId,
-        phone,
-        email,
-        created_at AS createdAt,
-        status
+            no, name, lawyer_id AS lawyerId, email, phone, status, created_at AS createdAt,
+            profile, card_front AS cardFront, card_back AS cardBack
         FROM lawyer
-        <where>
-            <if test="status != null and status != ''">
-                AND status = #{status}
-            </if>
-            <if test="keyword != null and keyword != ''">
-                AND (
-                name LIKE CONCAT('%', #{keyword}, '%')
-                OR lawyer_id LIKE CONCAT('%', #{keyword}, '%')
-                OR phone LIKE CONCAT('%', #{keyword}, '%')
-                OR email LIKE CONCAT('%', #{keyword}, '%')
-                )
-            </if>
-        </where>
         ORDER BY created_at DESC
-        LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <update id="updateStatus">
+        UPDATE lawyer
+        SET status = #{status}
+        WHERE no = #{no}
+    </update>
 
-
+    <update id="markAsWithdrawn">
+        UPDATE lawyer
+        SET status = 'APPROVED_LEAVE', updated_at = NOW()
+        WHERE no = #{userNo} AND status = 'APPROVED_JOIN'
+    </update>
 
 </mapper>

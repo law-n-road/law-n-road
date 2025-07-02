@@ -17,11 +17,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class  OAuth2SuccessHandler implements AuthenticationSuccessHandler {
-    
+
     // 개발인지 배포인지 검사
     @Value("${spring.profiles.active:}")
     private String activeProfile;
@@ -60,12 +61,17 @@ public class  OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //        // 프론트엔드로 리다이렉트 (쿼리 파라미터로 토큰 전달)
 //        response.sendRedirect("http://localhost:5173/naver-login?token=" + accessToken + "&refresh=" + refreshToken + "&nickname=" + client.getNickname());
 //    }
+
 @Override
 public void onAuthenticationSuccess(HttpServletRequest request,
                                     HttpServletResponse response,
                                     Authentication authentication) throws IOException {
+
+
+
     String email = (String) ((DefaultOAuth2User) authentication.getPrincipal())
             .getAttributes().get("email");
+    System.out.println(email);
 
     ClientEntity client = clientMapper.findByClientId(email);
     if (client == null) {
@@ -82,12 +88,15 @@ public void onAuthenticationSuccess(HttpServletRequest request,
 
     // ✅ 한글 nickname 인코딩
     String encodedNickname = URLEncoder.encode(client.getNickname(), StandardCharsets.UTF_8);
-    
+
     // 프로필에 따라 redirect URI 분기
-    String baseUrl = "dev".equals(activeProfile)
-        ? "http://localhost:5173/naver-login"
-        : "https://lawnroad.kr/naver-login";
-    
+//    String baseUrl = "dev".equals(activeProfile)
+//        ? "http://localhost:5173/naver-login"
+//        : "https://lawnroad.kr/naver-login";
+    String baseUrl = "http://localhost:5173/naver-login";
+//    String baseUrl = "prod".equals(activeProfile)
+//            ? "https://lawnroad.kr/#/naver-login"
+//            : "http://localhost:5173/#/naver-login";
     // ✅ 추가 정보 포함한 URI 조합
     String redirectUri = baseUrl
             + "?token=" + accessToken
@@ -98,8 +107,11 @@ public void onAuthenticationSuccess(HttpServletRequest request,
 
     System.out.println("🔁 리디렉션 주소: " + redirectUri);
 
+
     response.sendRedirect(redirectUri);
 }
+
+
 
 
 }

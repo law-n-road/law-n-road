@@ -19,8 +19,18 @@ public class AdminLawyerService {
 //        return lawyerMapper.selectLawyerList(param);
 //    }
 
-    public List<LawyerDTO> getLawyerList(String status, String keyword, int offset, int limit) {
-        return lawyerMapper.selectLawyerList(status, keyword, offset, limit);
+//    public List<LawyerDTO> getLawyerList(String status, String keyword, int offset, int limit) {
+//        return lawyerMapper.selectLawyerList(status, keyword, offset, limit);
+//    }
+
+    public List<LawyerDTO> getAllLawyers() {
+        return lawyerMapper.selectAllLawyers();
     }
+
+    public void approveLawyer(Long no) {
+        lawyerMapper.updateStatus(no, "APPROVED_JOIN");
+    }
+
+
 
 }

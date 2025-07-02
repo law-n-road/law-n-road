@@ -2,10 +2,7 @@
 import AdminFrame from "@/components/layout/admin/AdminFrame.vue";
 import CustomTable from "@/components/table/CustomTable.vue";
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import axios from 'axios'
-
-const router = useRouter()
 
 const rows = ref([])
 const isLoading = ref(false)
@@ -46,6 +43,9 @@ async function fetchItems() {
     const res = await axios.get('/api/admin/lawyer', { params })
     const list = res.data.list || []
 
+    console.log('res:', res.data)
+    console.log('list:', list)
+
     if (list.length < limit) hasMore.value = false
     rows.value.push(...list)
     offset.value += list.length
@@ -85,23 +85,6 @@ function closeModal() {
   selectedLawyer.value = null
 }
 
-function handleEdit(row) {
-  router.push(`/admin/lawyer/edit/${row.no}`)
-}
-
-function handleDelete(row) {
-  if (!confirm(`'${row?.name}' 변호사를 삭제하시겠습니까?`)) return
-  axios.delete(`/api/admin/member/lawyer/${row.no}`)
-      .then(() => {
-        rows.value = rows.value.filter(r => r.no !== row.no)
-        alert('삭제되었습니다.')
-      })
-      .catch(e => {
-        console.error('삭제 실패:', e)
-        alert(e?.response?.data?.message || '삭제 중 오류가 발생했습니다.')
-      })
-}
-
 const profileUrl = computed(() =>
     selectedLawyer.value?.profile?.startsWith('http')
         ? selectedLawyer.value.profile
@@ -128,7 +111,33 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
+
+async function approveLawyer() {
+  if (!selectedLawyer.value) return
+
+  try {
+    const res = await axios.post('/api/admin/lawyer/approve', {
+      no: selectedLawyer.value.no
+    })
+
+    alert('승인 처리 완료')
+    selectedLawyer.value.status = 'APPROVED_JOIN'
+
+    // rows 갱신
+    const idx = rows.value.findIndex(l => l.no === selectedLawyer.value.no)
+    if (idx !== -1) rows.value[idx].status = 'APPROVED_JOIN'
+
+    closeModal()
+  } catch (e) {
+    console.error('승인 실패:', e)
+    alert('승인 처리 중 오류 발생')
+  }
+}
+
+
+
 </script>
+
 
 <template>
   <AdminFrame>
@@ -144,11 +153,8 @@ onUnmounted(() => {
             { label: '가입일',     key: 'createdAt' },
             { label: '계정 상태',  key: 'status' }
           ]"
-          :action-buttons="{ edit: true, delete: true }"
           :filters="filters"
           :show-search-input="true"
-          @edit-action="handleEdit"
-          @delete-action="handleDelete"
           @update:filters="handleFilterChange"
           @row-click="handleRowClick"
       >
@@ -163,19 +169,16 @@ onUnmounted(() => {
       <div v-if="!hasMore" class="text-center my-4 text-muted">모든 변호사를 불러왔습니다.</div>
     </div>
 
+    <!-- ✅ 사진 모달 -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-container">
         <button class="modal-close-btn" @click="closeModal">✕</button>
-
-        <h3 class="modal-title">변호사 상세 정보 (#{{ selectedLawyer?.no }})</h3>
-
-        <ul class="info-list">
-          <li><strong>이름:</strong> {{ selectedLawyer?.name }}</li>
-          <li><strong>이메일:</strong> {{ selectedLawyer?.email }}</li>
-          <li><strong>전화번호:</strong> {{ selectedLawyer?.phone }}</li>
-          <li><strong>계정 상태:</strong> {{ statusMap[selectedLawyer?.status] || selectedLawyer?.status }}</li>
-        </ul>
-
+        <h3 class="modal-title">변호사 사진 (#{{ selectedLawyer?.no }})</h3>
+        <div class="mt-4 text-right">
+          <button v-if="selectedLawyer?.status !== 'APPROVED_JOIN'" class="approve-btn" @click="approveLawyer">
+            승인하기
+          </button>
+        </div>
         <div class="image-section">
           <div>
             <p>프로필 사진</p>
@@ -189,6 +192,8 @@ onUnmounted(() => {
             <p>신분증 뒷면</p>
             <img :src="cardBackUrl" alt="신분증 뒤" @error="e => e.target.style.display='none'" />
           </div>
+
+
         </div>
       </div>
     </div>
@@ -227,14 +232,6 @@ onUnmounted(() => {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 16px;
-}
-.info-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 16px;
-}
-.info-list li {
-  margin-bottom: 8px;
 }
 .image-section {
   display: grid;

@@ -28,14 +28,22 @@ const password = ref('')
 
 
 const naverLogin = () => {
-  // const redirectUri = encodeURIComponent('http://localhost:5173/login')
-  // window.location.href = 'http://localhost:8080/oauth2/authorization/naver'
+  // console.log("네이버 소셜 로그인 진입 중 ..")
+  // alert("naverLogin 호출됨")
+  const redirectUri = encodeURIComponent('http://localhost:5173/login')
+  // alert(redirectUri)
+
+  window.location.href = 'http://localhost:8080/oauth2/authorization/naver'
+  // const API_BASE = import.meta.env.VITE_API_BASE || 'https://lawnroad.kr'
+  // window.location.href = 'https://lawnroad.kr/oauth2/authorization/naver'
+
+
 
   // window.location.origin은 현재 웹사이트의 프로토콜 + 도메인 + 포트를 의미
   // 로컬 상황 : http://localhost:5173 + '/login'
   // 배포 상황 : https://lawnroad.kr  + '/login'
-  const redirectUri = encodeURIComponent(window.location.origin + '/login')
-  window.location.href = `${__API_BASE__}/oauth2/authorization/naver?redirect_uri=${redirectUri}`
+  // const redirectUri = encodeURIComponent(window.location.origin + '/login')
+  // window.location.href = `${__API_BASE__}/oauth2/authorization/naver?redirect_uri=${redirectUri}`
 }
 
 const submitLogin = async () => {

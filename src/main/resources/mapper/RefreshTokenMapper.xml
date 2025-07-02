@@ -4,17 +4,25 @@
 
 <mapper namespace="com.lawnroad.account.mapper.RefreshMapper">
 
+<!--    <insert id="save">-->
+<!--        INSERT INTO refresh_token (no, token)-->
+<!--        VALUES (#{userNo}, #{token})-->
+<!--            ON DUPLICATE KEY UPDATE token = #{token}-->
+<!--    </insert>-->
 
-    <insert id="save">
-        INSERT INTO refresh_token (no, token)
-        VALUES (#{userNo}, #{token})
-            ON DUPLICATE KEY UPDATE token = #{token}
+    <insert id="save" parameterType="map">
+        INSERT INTO refresh_token
+            (no, token, expires_at)
+        VALUES
+            (#{userNo}, #{token}, DATE_ADD(NOW(), INTERVAL 7 DAY))
+            ON DUPLICATE KEY UPDATE
+                                 token      = VALUES(token),
+                                 expires_at = VALUES(expires_at)
     </insert>
 
 
     <delete id="deleteByUserNo" parameterType="long">
         DELETE FROM refresh_token WHERE no = #{userNo}
     </delete>
-
 
 </mapper>

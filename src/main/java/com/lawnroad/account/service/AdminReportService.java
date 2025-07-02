@@ -3,6 +3,8 @@ package com.lawnroad.account.service;
 import com.lawnroad.account.dto.BroadcastReportConfirmDTO;
 import com.lawnroad.account.dto.ChatReportConfirmDto;
 import com.lawnroad.account.mapper.AdminReportMapper;
+import com.lawnroad.account.mapper.LawyerMapper;
+import com.lawnroad.advertisement.mapper.AdMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class AdminReportService {
 
     private final AdminReportMapper adminReportMapper;
+    private final AdMapper adMapper;
 
     public List<BroadcastReportConfirmDTO> getUnpenalizedReports() {
         System.out.println("getUnpenalizedReports");
@@ -64,8 +67,12 @@ public class AdminReportService {
         System.out.println("✅ 자동 정지 해제 완료됨");
     }
 
-
-
-
+    @Scheduled(cron = "0 18 16 * * *")  // 매일 오후 4시 10분
+    public void autoReleaseClientStop_ad() {
+        adMapper.releaseClientStop();
+        System.out.println("✅ 광고 자동 해제 완료됨");
+    }
 
 }
+
+

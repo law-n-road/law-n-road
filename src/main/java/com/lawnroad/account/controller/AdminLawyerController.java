@@ -5,10 +5,7 @@ import com.lawnroad.account.dto.LawyerDTO;
 import com.lawnroad.account.service.AdminLawyerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,19 +36,44 @@ public class AdminLawyerController {
 //        return ResponseEntity.ok(Collections.singletonMap("list", list));
 //    }
 
-    @GetMapping
-    public Map<String, Object> getLawyerList(
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "20") int limit
-    ) {
-        List<LawyerDTO> list = adminLawyerService.getLawyerList(status, keyword, offset, limit);
+//    @GetMapping
+//    public Map<String, Object> getLawyerList(
+//            @RequestParam(required = false) String status,
+//            @RequestParam(required = false) String keyword,
+//            @RequestParam(defaultValue = "0") int offset,
+//            @RequestParam(defaultValue = "20") int limit
+//    ) {
+//        List<LawyerDTO> list = adminLawyerService.getLawyerList(status, keyword, offset, limit);
+//        for( LawyerDTO lawyerDTO : list ) {
+//            System.out.println(lawyerDTO);
+//        }
+//
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("list", list);
+//        return result;
+//    }
 
+
+
+    @GetMapping
+    public Map<String, Object> getAllLawyers() {
+        List<LawyerDTO> list = adminLawyerService.getAllLawyers();
+        for( LawyerDTO lawyerDTO : list){
+            System.out.println(lawyerDTO);
+        }
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);
         return result;
     }
+
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveLawyer(@RequestBody Map<String, Long> body) {
+        Long no = body.get("no");
+        adminLawyerService.approveLawyer(no);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
 

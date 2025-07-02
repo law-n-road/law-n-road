@@ -365,7 +365,9 @@ async function toggleConsultation() {
     <div class="mypage-home p-4">
       <h3 class="mb-3 text-muted d-flex justify-content-between align-items-center">
         마이페이지 홈
-        <button class="btn small btn-outline-primary" @click="goToProfileEdit">정보 수정</button>
+        <button class="btn btn-outline-primary btn-sm" @click="goToProfileEdit">
+          정보 수정
+        </button>
       </h3>
       <p class="text-muted">환영합니다! {{ nickname }}님 마이페이지 홈입니다.</p>
 
@@ -700,5 +702,15 @@ async function toggleConsultation() {
 .add-keyword-btn:hover {
   color: #2c3e50;
   text-decoration: underline;
+}
+
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.btn-outline-primary.btn-sm {
+  padding: 0.25rem 0.75rem;
 }
 </style>

@@ -172,4 +172,11 @@ public class LawyerService {
         lawyerMapper.updateLawyerInfo(lawyerId, officeNumber, phone, detailAddress, zipcode, roadAddress, landAddress);
     }
 
+    public void lawyer_withdraw(Long userNo) {
+        int result = lawyerMapper.markAsWithdrawn(userNo);
+        if (result == 0) {
+            throw new IllegalArgumentException("해당 변호사를 찾을 수 없거나 이미 탈퇴 처리됨");
+        }
+    }
+
 }

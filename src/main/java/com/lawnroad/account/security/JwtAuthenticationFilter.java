@@ -99,11 +99,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String clientId = jwtTokenUtil.getClientIdFromToken(token);
                 String role = jwtTokenUtil.getRoleFromToken(token); // "CLIENT", "LAWYER"
 
-//                System.out.println("🟢 필터 진입");
-//                System.out.println("🔐 토큰: " + token);
-//                System.out.println("👤 clientId: " + clientId);
-//                System.out.println("🎭 role: " + role);
-//                System.out.println("✅ 권한 등록: ROLE_" + role);
+                System.out.println("🟢 필터 진입");
+                System.out.println("🔐 토큰: " + token);
+                System.out.println("👤 clientId: " + clientId);
+                System.out.println("🎭 role: " + role);
+                System.out.println("✅ 권한 등록: ROLE_" + role);
 
                 // ✅ UserDetails 객체로 만들어 넣어주기
                 UserDetails userDetails = org.springframework.security.core.userdetails.User
@@ -118,7 +118,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//                System.out.println("여기까지 옴");
+                System.out.println("여기까지 옴");
 
 
             }
