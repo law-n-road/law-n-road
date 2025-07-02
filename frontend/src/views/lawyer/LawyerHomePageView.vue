@@ -114,7 +114,13 @@ function setSort(order) {
 }
 
 function goToVod(vod) {
-  router.push(`/vod/${vod.broadcastNo}`)
+  try {
+    http.put(`/api/public/vod/${vod.vodNo}`) // 조회수 증가
+  } catch (err) {
+    console.error("❌ 조회수 증가 실패:", err)
+  }
+
+  router.push(`/vod/${vod.broadcastNo}`) // broadcastNo 기준으로 이동
 }
 
 // currentPage가 바뀔 때마다 데이터 재요청

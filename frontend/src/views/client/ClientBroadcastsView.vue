@@ -392,26 +392,8 @@ export default defineComponent({
       if (noticeInterval) clearInterval(noticeInterval); // 중복 방지
       noticeInterval = setInterval(async () => {
         if (!stompClient.value?.connected) return;
-        const token = await getValidToken();
-        if (!token) return;
-
-      //   stompClient.value.publish({
-      //     destination: "/app/chat.sendMessage",
-      //     body: JSON.stringify({
-      //       broadcastNo: broadcastNo.value,
-      //       // message:
-      //       //     "📢 !자동응답이라고 입력하면\n" +
-      //       //     "사용 가능한 자동응답 키워드 목록을 안내해드려요!\n" +
-      //       //     "\n" +
-      //       //     "예) !예약, !상담 등",
-      //       // type: "NOTICE",
-      //     }),
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
        },
-      ); // 30초마다 (원하면 시간 조정)
+      );
     };
 
     const sendMessage = async () => {
