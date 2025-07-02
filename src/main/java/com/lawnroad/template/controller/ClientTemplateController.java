@@ -30,21 +30,18 @@ public class ClientTemplateController {
    */
   @GetMapping("/orders")
   public ResponseEntity<ClientOrderListResponseDto> getOrders(
-      @RequestHeader("Authorization") String authHeader,
       @RequestParam(required = false) String keyword,
       @RequestParam(required = false) String status,
       @RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "10") int limit
+      @RequestParam(defaultValue = "10") int limit,
+      @RequestParam Long no
   ) {
-    String token = authHeader.replace("Bearer ", "");
-    Claims claims = jwtUtil.parseToken(token);
-    long userNo = claims.get("no", Long.class);
     
-    // System.out.println(keyword +' '+ status+' '+page+' '+limit);
+     System.out.println(no + ' ' + keyword +' '+ status+' '+page+' '+limit);
     
     // 1) 페이징된 주문 목록(검색어+상태 필터 적용)
-    List<ClientOrderListDto> list = clientTemplateService.findOrders(userNo, keyword, status, page, limit);
-    int totalCount = clientTemplateService.countOrders(userNo, keyword, status);
+    List<ClientOrderListDto> list = clientTemplateService.findOrders(no, keyword, status, page, limit);
+    int totalCount = clientTemplateService.countOrders(no, keyword, status);
     
     // System.out.println(list);
     

@@ -601,9 +601,9 @@ onMounted(() => {
   timeInterval = setInterval(updateTime, 1000)
 
   // 1) 빈 차트 먼저 그리기
-  setTimeout(() => {
-    createWeeklyChart()
-  }, 100)
+  // setTimeout(() => {
+  //   createWeeklyChart()
+  // }, 100)
 
   // 2) 실제 데이터로 업데이트
   loadWeeklyChartData()

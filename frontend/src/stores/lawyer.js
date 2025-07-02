@@ -21,6 +21,15 @@ export const useLawyerStore = defineStore('lawyer', {
     },
 
     actions: {
+        reset() {
+            this.lawyerInfo = 0
+            this.name = ''
+            this.profileImagePath = ''
+            this.fetched = false
+            this.fetchTried = false
+            this.fetchSucceeded = false
+        },
+
         // 동일한 값에 대해 반복적으로 조회되는 것을 피하기 위함
         async fetchLawyerInfo(no) {
             if (this.fetchTried) return

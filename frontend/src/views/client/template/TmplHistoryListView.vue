@@ -25,12 +25,15 @@ const isDownloaded = ref(false)
 // 템플릿 목록 불러오기
 async function fetchOrders(filtersObj, pageNo) {
   const params = {
+    no: Number(localStorage.getItem('no')),
     page: pageNo,
     limit: 10,
     ...normalizeFilters(filtersObj)
   }
 
+  console.log('fetchOrders', params)
   const res = await http.get('/api/client/templates/orders', params)
+
   console.log(res)
 
   // 상태 한글 변환 맵
