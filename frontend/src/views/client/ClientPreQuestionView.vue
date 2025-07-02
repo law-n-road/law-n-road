@@ -52,19 +52,6 @@ const canAskPreQuestion = computed(() => {
   return (start - now) > 10 * 60 * 1000;
 });
 
-// 방송 시작 10분 전 자동 새로고침
-function getMsToStart() {
-  if (!preQuestion.value.startTime) return null;
-  return new Date(preQuestion.value.startTime) - new Date();
-}
-function autoReloadWhenNeeded() {
-  const msLeft = getMsToStart();
-  if (msLeft === null) return;
-  if (msLeft <= 10 * 60 * 1000) return;
-  setTimeout(() => {
-    location.reload();
-  }, msLeft - 10 * 60 * 1000);
-}
 
 onMounted(async () => {
   const token = await getValidToken();
@@ -97,7 +84,6 @@ onMounted(async () => {
 
   preQuestion.value = data;
   scrollToPreQuestionBottom();
-  autoReloadWhenNeeded();
 });
 
 const submitQuestion = async () => {
@@ -105,6 +91,18 @@ const submitQuestion = async () => {
     alert('내용을 입력해주세요!');
     return;
   }
+  // 방송 시작 시간 검사 (등록 시점)
+  if (preQuestion.value.startTime) {
+    const start = new Date(preQuestion.value.startTime);
+    const now = new Date();
+    const diff = start - now;
+
+    if (diff <= 10 * 60 * 1000) {
+      alert('방송 시작 10분 전에는 사전질문을 등록할 수 없습니다.');
+      return;
+    }
+  }
+
   const token = await getValidToken();
   if (!token) {
     alert("로그인이 필요합니다!");
@@ -129,7 +127,6 @@ const submitQuestion = async () => {
     const preQRes = await axios.get(`/api/client/broadcasts/schedule/${scheduleNo}/preQuestion`);
     preQuestion.value = preQRes.data;
     scrollToPreQuestionBottom();
-    autoReloadWhenNeeded();
   } catch (e) {
     alert('등록에 실패했습니다.');
   }
