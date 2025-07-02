@@ -221,7 +221,7 @@ export default defineComponent({
         alert('변호사 정보가 없습니다.')
         return
       }
-      router.push(`/lawyer/${userNo}/homepage`)
+      router.push(`/homepage/${userNo}`)
     }
 
     onBeforeRouteLeave((to, from, next) => {
