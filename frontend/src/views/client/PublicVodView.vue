@@ -48,10 +48,10 @@ const applyKeywordAlert = async () => {
   const role = getUserRole()  // null 이면 비회원
 
   if (!role) {
-    alert('🔒 로그인 후 이용 가능합니다.')
+    alert('로그인 후 이용 가능합니다.')
     return
   } else if (role === 'LAWYER') {
-    alert('⚠️ 변호사는 알림신청 불가능합니다.')
+    alert('변호사는 알림신청 불가능합니다.')
     return
   }
 

@@ -1,12 +1,12 @@
 export default [
-    {
-        path: '/admin',
-        name: 'Admin',
-        component: () => import('@/views/admin/DashboardView.vue')
-    },
+    // {
+    //     path: '/admin',
+    //     name: 'Admin',
+    //     component: () => import('@/views/admin/DashboardView.vue')
+    // },
 
     {
-        path: '/admin/member',
+        path: '/admin',
         name: 'MemberManagement',
         component: () => import('@/views/admin/MemberManagementView.vue')
     },

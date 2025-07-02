@@ -54,7 +54,7 @@ function openPostcodePopup() {
 const updateLawyerInfo = async () => {
   if (!token || !userNo) {
     alert('로그인이 필요합니다.')
-    router.push('/login')
+    // router.push('/login')
     return
   }
 

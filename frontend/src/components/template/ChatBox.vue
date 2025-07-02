@@ -48,6 +48,9 @@ async function send() {
 
     messages.value.push({ role: 'assistant', content: res.data.reply })
 
+    // AI 응답 후에도 스크롤 내리기
+    scrollToBottom()
+
     if (res.data.allVariablesFilled) {
       finalHtml.value = res.data.finalHtml
     }
@@ -58,6 +61,7 @@ async function send() {
       role: 'assistant',
       content: 'AI 서버와의 통신 중 오류가 발생했습니다.'
     })
+    scrollToBottom()
   }
 }
 
@@ -81,14 +85,24 @@ async function downloadPdf() {
 
 const chatContainer = ref(null)
 
+// 스크롤을 맨 아래로 내리는 함수
+function scrollToBottom() {
+  nextTick(() => {
+    const el = chatContainer.value
+    if (el) {
+      // 부드러운 스크롤로 맨 아래로
+      el.scrollTo({
+        top: el.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  })
+}
+
 // 메시지가 추가될 때마다 스크롤 내리기
-watch(messages, async () => {
-  await nextTick()
-  const el = chatContainer.value
-  if (el) {
-    el.scrollTop = el.scrollHeight
-  }
-})
+watch(messages, () => {
+  scrollToBottom()
+}, { deep: true })
 
 function formatMessage(text) {
   return text
@@ -113,7 +127,7 @@ function formatMessage(text) {
           :key="i"
           :class="['message', msg.role]"
       >
-        <strong>{{ msg.role === 'user' ? '나' : 'AI' }}:</strong>
+        <strong class="me-2">{{ msg.role === 'user' ? '' : '🤖' }}</strong>
         <pre class="message-text">{{ formatMessage(msg.content) }}</pre>
       </div>
     </div>
@@ -144,11 +158,49 @@ function formatMessage(text) {
   background: #f9f9f9;
 }
 .chat-messages {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
+  overflow-x: hidden; /* 가로 스크롤 숨기기 */
+  scroll-behavior: smooth;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
 }
+
 .message {
-  margin-bottom: .5rem;
+  margin-bottom: 1rem;
+  max-width: 100%;
+  word-wrap: break-word; /* 긴 단어 줄바꿈 */
+
+  padding: 8px 0; /* 상하 패딩 추가 */
+}
+
+.message-text {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 80%;
+  word-wrap: break-word;
+  word-break: break-word; /* 강제 줄바꿈 */
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.message.user .message-text {
+  background-color: #4a508f;
+  color: white;
+  margin-left: auto;
+}
+
+.message.assistant .message-text {
+  background-color: #f1f3f4;
+  color: #333;
 }
 .message.user {
   text-align: right;
@@ -165,5 +217,8 @@ function formatMessage(text) {
   background: #fcfcfc;
   white-space: pre-wrap;
   min-height: 100px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 </style>

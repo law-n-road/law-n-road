@@ -33,7 +33,7 @@ const submitAdminLogin = async () => {
 
     router.push('/admin')
   } catch (err) {
-    console.error('❌ 관리자 로그인 실패:', err)
+    console.error('관리자 로그인 실패:', err)
     if (err.response) {
       alert(`로그인 실패: ${err.response.data}`)
     } else {

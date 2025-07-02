@@ -36,7 +36,14 @@ const handleAddToCart = async () => {
 
   if (!accountType) {
     alert('로그인이 필요합니다.')
-    return router.push(`/login?redirect=${encodeURIComponent(route.fullPath)}`)
+    return;
+    // return router.push(`/login?redirect=${encodeURIComponent(route.fullPath)}`)
+  }
+
+  if (accountType !== 'client') {
+    alert('접근 권한이 없습니다.')
+    return;
+    // return router.push('/')
   }
 
   try {
@@ -64,7 +71,14 @@ const handleAddToCart2 = async () => {
 
   if (!accountType) {
     alert('로그인이 필요합니다.')
-    return router.push(`/login?redirect=${encodeURIComponent(route.fullPath)}`)
+    return;
+    // return router.push(`/login?redirect=${encodeURIComponent(route.fullPath)}`)
+  }
+
+  if (accountType !== 'client') {
+    alert('접근 권한이 없습니다.')
+    return;
+    // return router.push('/')
   }
 
   try {

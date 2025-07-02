@@ -4,6 +4,7 @@ import com.lawnroad.admin.dto.AdPurchaseDto;
 import com.lawnroad.admin.dto.AdPurchaseSearchConditionDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -19,9 +20,14 @@ public interface AdminPageMapper {
       @Param("status") String approvalStatus
   );
   
-  // 회원 관리 조회 등
-  
-  // 예약 관리 조회 등
-  
-  // 패널티 관리 조회 등
+  /**
+   * start_date가 오늘이고 승인(APPROVED)된 광고의 ad_status를 1로 설정
+   */
+  @Update("""
+    UPDATE ad_purchase
+    SET ad_status = 1
+    WHERE DATE(start_date) = CURDATE()
+      AND approval_status = 'APPROVED'
+  """)
+  int activateTodayAds();
 }

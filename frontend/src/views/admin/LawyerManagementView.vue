@@ -13,14 +13,14 @@ const limit = 20
 const searchKeyword = ref('')
 const currentFilters = ref({})
 const filters = ref([
-  { label: '계정 상태', key: 'status', options: ['전체', '가입승인', '가입거절', '탈퇴 중', '탈퇴회원'] }
+  { label: '계정 상태', key: 'accountStatus', options: ['전체', 'APPROVED_JOIN', 'REJECTED_JOIN', 'PENDING_LEAVE', 'APPROVED_LEAVE'] }
 ])
 
-const statusMap = {
-  APPROVED_JOIN: '가입승인',
-  REJECTED_JOIN: '가입거절',
-  PENDING_LEAVE: '탈퇴 중',
-  APPROVED_LEAVE: '탈퇴회원'
+const accountStatusMap = {
+  APPROVED_JOIN: 'APPROVED_JOIN',
+  REJECTED_JOIN: 'REJECTED_JOIN',
+  PENDING_LEAVE: 'PENDING_LEAVE',
+  APPROVED_LEAVE: 'APPROVED_LEAVE'
 }
 
 function handleScroll() {
@@ -41,7 +41,10 @@ async function fetchItems() {
 
   try {
     const res = await axios.get('/api/admin/lawyer', { params })
-    const list = res.data.list || []
+    const list = (res.data.list || []).map(item => ({
+      ...item,
+      accountStatus: item.status  // 여기서 반드시 status 를 accountStatus 로 복사
+    }))
 
     console.log('res:', res.data)
     console.log('list:', list)
@@ -57,13 +60,13 @@ async function fetchItems() {
 }
 
 function handleFilterChange(newFilters) {
-  const reverseStatusMap = Object.fromEntries(Object.entries(statusMap).map(([k, v]) => [v, k]))
-  const mapped = { ...newFilters }
+  const reverseStatusMap = Object.fromEntries(Object.entries(accountStatusMap).map(([k, v]) => [v, k]))
+  const mapped = {}
+  if (newFilters.accountStatus && newFilters.accountStatus !== '전체') {
+    mapped.accountStatus = reverseStatusMap[newFilters.accountStatus]
+  }
 
-  if (mapped.status === '전체') delete mapped.status
-  else mapped.status = reverseStatusMap[mapped.status]
-
-  searchKeyword.value = newFilters.keyword || ''
+  searchKeyword.value = ''
   rows.value = []
   offset.value = 0
   hasMore.value = true
@@ -76,6 +79,7 @@ const showModal = ref(false)
 const selectedLawyer = ref(null)
 
 function handleRowClick(row) {
+  if (row.accountStatus !== 'REJECTED_JOIN') return
   selectedLawyer.value = row
   showModal.value = true
 }
@@ -121,11 +125,11 @@ async function approveLawyer() {
     })
 
     alert('승인 처리 완료')
-    selectedLawyer.value.status = 'APPROVED_JOIN'
+    selectedLawyer.value.accountStatus = 'APPROVED_JOIN'
 
     // rows 갱신
     const idx = rows.value.findIndex(l => l.no === selectedLawyer.value.no)
-    if (idx !== -1) rows.value[idx].status = 'APPROVED_JOIN'
+    if (idx !== -1) rows.value[idx].accountStatus = 'APPROVED_JOIN'
 
     closeModal()
   } catch (e) {
@@ -151,16 +155,16 @@ async function approveLawyer() {
             { label: '전화번호',   key: 'phone' },
             { label: '이메일',     key: 'email' },
             { label: '가입일',     key: 'createdAt' },
-            { label: '계정 상태',  key: 'status' }
+            { label: '계정 상태',  key: 'accountStatus' }
           ]"
           :filters="filters"
           :show-search-input="true"
           @update:filters="handleFilterChange"
           @row-click="handleRowClick"
       >
-        <template #cell-status="{ row }">
-          <span :style="{ color: row.status === 'APPROVED_JOIN' ? '#003366' : 'inherit' }">
-            {{ statusMap[row.status] || row.status }}
+        <template #cell-accountStatus="{ row }">
+          <span :style="{ color: row.accountStatus === 'APPROVED_JOIN' ? '#003366' : 'inherit' }">
+            {{ accountStatusMap[row.accountStatus] || row.accountStatus }}
           </span>
         </template>
       </CustomTable>
@@ -175,9 +179,6 @@ async function approveLawyer() {
         <button class="modal-close-btn" @click="closeModal">✕</button>
         <h3 class="modal-title">변호사 사진 (#{{ selectedLawyer?.no }})</h3>
         <div class="mt-4 text-right">
-          <button v-if="selectedLawyer?.status !== 'APPROVED_JOIN'" class="approve-btn" @click="approveLawyer">
-            승인하기
-          </button>
         </div>
         <div class="image-section">
           <div>
@@ -195,6 +196,9 @@ async function approveLawyer() {
 
 
         </div>
+        <button v-if="selectedLawyer?.accountStatus !== 'APPROVED_JOIN'" class="approve-btn btn btn-primary mt-4" @click="approveLawyer">
+          승인하기
+        </button>
       </div>
     </div>
   </AdminFrame>

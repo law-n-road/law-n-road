@@ -114,7 +114,13 @@ function setSort(order) {
 }
 
 function goToVod(vod) {
-  router.push(`/vod/${vod.broadcastNo}`)
+  try {
+    http.put(`/api/public/vod/${vod.vodNo}`) // 조회수 증가
+  } catch (err) {
+    console.error("❌ 조회수 증가 실패:", err)
+  }
+
+  router.push(`/vod/${vod.broadcastNo}`) // broadcastNo 기준으로 이동
 }
 
 // currentPage가 바뀔 때마다 데이터 재요청
@@ -191,7 +197,7 @@ onMounted(async () => {
 
       <div class="row">
         <div class="col-12">
-          <div class="card shadow-sm mb-0 p-4 d-flex">
+          <div class="card shadow-sm mb-0 p-4 d-flex mb-4">
             <h5 class="fw-bold">{{ data.name }} 변호사의 방송 다시보기</h5>
             <p class="mb-0">{{  }}</p>
             <!-- 정렬 버튼 (극소형) -->

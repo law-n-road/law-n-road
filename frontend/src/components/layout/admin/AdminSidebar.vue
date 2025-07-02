@@ -11,11 +11,11 @@ const lawyer = {
 }
 
 const menuItems = [
-  { label: '홈 대시보드', icon: 'bi-house-door', path: '/admin' },
-  { label: '의뢰인관리', icon: 'bi-people', path: '/admin/member' },
+  // { label: '홈 대시보드', icon: 'bi-house-door', path: '/admin' },
+  { label: '의뢰인관리', icon: 'bi-people', path: '/admin' },
   { label: '변호사관리', icon: 'bi-person-badge', path: '/admin/lawyer' },
-  { label: '변호사신고관리', icon: 'bi-flag', path: '/admin/report_lawyer' },
-  { label: '의뢰인신고관리', icon: 'bi-flag', path: '/admin/report_client' },
+  { label: '변호사신고관리', icon: 'bi-exclamation-circle', path: '/admin/report_lawyer' },
+  { label: '의뢰인신고관리', icon: 'bi-person-x', path: '/admin/report_client' },
   { label: '광고관리', icon: 'bi-megaphone', path: '/admin/ads' },
 ]
 

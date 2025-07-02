@@ -32,9 +32,9 @@ export const refreshAccessToken = async () => {
     // const router = useRouter() // Composition API 훅 내부에서 호출
     const userNo = localStorage.getItem('no')
     if (!userNo) {
-        alert('죄송합니다! 다시 로그인해주세요')
+        // alert('죄송합니다! 다시 로그인해주세요')
         localStorage.clear()
-        router2.push('/login')
+        // router2.push('/login')
         return null
     }
 

@@ -36,7 +36,11 @@ async function fetchItems() {
 
   try {
     const res = await axios.get('/api/admin/client', { params })
-    const list = res.data.list || []
+
+    const list = (res.data.list || []).map(item => ({
+      ...item,
+      accountStatus: item.status
+    }))
 
     if (list.length < limit) {
       hasMore.value = false
@@ -108,19 +112,18 @@ onUnmounted(() => {
             { label: '전화번호',     key: 'phone' },
             { label: '이메일',       key: 'email' },
             { label: '회원 가입일',  key: 'createdAt' },
-            { label: '계정상태',     key: 'status' }
+            { label: '계정상태',     key: 'accountStatus' }
           ]"
           :action-buttons="{ edit: true, delete: true }"
           :filters="filters"
           @edit-action="handleEdit"
           @delete-action="handleDelete"
           @update:filters="handleFilterChange"
-          @row-click="handleRowClick"
       >
         <!-- status 셀에 조건부 스타일 적용 -->
         <template #cell-status="{ row }">
-          <span :style="{ color: row.status === '회원' ? '#003366' : 'inherit' }">
-            {{ row.status }}
+          <span :style="{ color: row.accountStatus === '회원' ? '#003366' : 'inherit' }">
+            {{ row.accountStatus }}
           </span>
         </template>
       </CustomTable>

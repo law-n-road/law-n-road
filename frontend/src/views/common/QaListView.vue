@@ -94,12 +94,14 @@ function onClickWrite() {
 
   if (!accountType) {
     alert('로그인이 필요합니다.')
-    return router.push(`/login?redirect=${encodeURIComponent(router.currentRoute.value.fullPath)}`)
+    return;
+    // return router.push(`/login?redirect=${encodeURIComponent(router.currentRoute.value.fullPath)}`)
   }
 
-  if (accountType !== 'client' && accountType !== 'lawyer') {
+  if (accountType !== 'client') {
     alert('접근 권한이 없습니다.')
-    return router.push('/')
+    return;
+    // return router.push('/')
   }
 
   if (accountType === 'client') {
