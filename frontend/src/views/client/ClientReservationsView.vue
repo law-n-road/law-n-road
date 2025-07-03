@@ -32,9 +32,9 @@
                   @click="select(slot)"
                   :class="[
                   'px-3 py-2 rounded border',
-                  (slot.status !== 1 || isPast(slot))
+                  slot.status !== 1 || isPast(slot)
                     ? 'bg-gray-200 cursor-not-allowed'
-                    : selectedNo === slot.no
+                    : selectedSlot && selectedSlot.no === slot.no
                       ? 'bg-green-200 border-green-500'
                       : 'hover:bg-green-50'
                 ]"
@@ -57,9 +57,9 @@
                   @click="select(slot)"
                   :class="[
                   'px-3 py-2 rounded border',
-                  (slot.status !== 1 || isPast(slot))
+                  slot.status !== 1 || isPast(slot)
                     ? 'bg-gray-200 cursor-not-allowed'
-                    : selectedNo === slot.no
+                    : selectedSlot && selectedSlot.no === slot.no
                       ? 'bg-green-200 border-green-500'
                       : 'hover:bg-green-50'
                 ]"
@@ -74,10 +74,10 @@
         <div class="text-right">
           <button
               class="px-5 py-2 bg-blue-600 text-white disabled:opacity-50"
-              :disabled="!selectedNo"
+              :disabled="!selectedSlot"
               @click="apply"
           >
-            예약 신청
+            결제 페이지로 이동
           </button>
         </div>
       </div>
@@ -87,7 +87,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 import ClientFrame from '@/components/layout/client/ClientFrame.vue'
 import { getValidToken } from '@/libs/axios-auth.js'
@@ -98,17 +98,14 @@ const props = defineProps({
   lawyerName: { type: String, required: true }
 })
 
-const route       = useRoute()
 const router      = useRouter()
 const loading     = ref(true)
 const slotsFlat   = ref([])
-const selectedNo  = ref(null)
+const selectedSlot = ref(null)
 const now         = ref(new Date())
 
 // 현재 시각을 1분마다 갱신
-setInterval(() => {
-  now.value = new Date()
-}, 60_000)
+setInterval(() => { now.value = new Date() }, 60_000)
 
 // 과거 슬롯 판정
 function isPast(slot) {
@@ -116,15 +113,15 @@ function isPast(slot) {
   return slotDateTime < now.value
 }
 
-// 슬롯 조회
+// 슬롯 조회(변경 없음)
 onMounted(async () => {
   const token = await getValidToken()
   if (!token) {
     alert('로그인이 필요합니다.')
+    loading.value = false
     return
   }
   try {
-    const token = localStorage.getItem('token')
     const today = new Date().toISOString().slice(0, 10)
     const res = await axios.get(
         `/api/lawyer/${props.lawyerNo}/slots`,
@@ -142,7 +139,7 @@ onMounted(async () => {
   }
 })
 
-// 그룹핑 함수
+// 그룹핑 함수(변경 없음)
 function groupByDate(list) {
   const map = {}
   list.forEach(s => {
@@ -159,51 +156,31 @@ function groupByDate(list) {
 
 const weeklySlots = computed(() => groupByDate(slotsFlat.value).slice(0, 7))
 
-// 날짜 포맷
+// 날짜 포맷(변경 없음)
 function formatDate(str) {
   const d = new Date(str + 'T00:00:00')
   return d.toLocaleDateString('ko', { month: 'long', day: 'numeric', weekday: 'short' })
 }
 
-// 슬롯 선택
+// 슬롯 선택(변경 없음)
 function select(slot) {
   if (slot.status !== 1 || isPast(slot)) return
-  selectedNo.value = slot.no
+  selectedSlot.value = slot
 }
 
-// 예약 신청
-async function apply() {
-  const token = await getValidToken()
-  if (!token) {
-    alert('로그인이 필요합니다.')
-    return
-  }
-  try {
-    const token = localStorage.getItem('token')
-    const payload = {
-      slotNo:  selectedNo.value,
-      content: ''
+// apply: 예약+주문 API 호출 부분 제거, 결제 페이지 이동만 수행
+function apply() {
+  const slot = selectedSlot.value
+  router.push({
+    name: 'ClientReservationsPayment',
+    query: {
+      slotNo:     slot.no,
+      slotDate:   slot.slotDate,
+      slotTime:   slot.slotTime,
+      amount:     slot.amount ?? 0,
+      lawyerName: props.lawyerName
     }
-    const { data: dto } = await axios.post(
-        `/api/client/reservations`,
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
-    )
-    await router.push({
-      name:  'ClientReservationsPayment',
-      query: {
-        orderCode:     dto.orderCode,
-        reservationNo: dto.no,
-        slotDate:      dto.slotDate,
-        slotTime:      dto.slotTime,
-        amount:        dto.amount,
-        lawyerName:    props.lawyerName
-      }
-    })
-  } catch (err) {
-    console.error(err)
-    alert('예약 신청에 실패했습니다.')
-  }
+  })
 }
 </script>
 

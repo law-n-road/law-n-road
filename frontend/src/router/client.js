@@ -44,7 +44,14 @@ export default [
     {
         path: '/client/reservations/payment',
         name: 'ClientReservationsPayment',
-        component: () => import('@/views/client/ClientReservationsPayment.vue')
+        component: () => import('@/views/client/ClientReservationsPayment.vue'),
+        props: route => ({
+            lawyerNo:   Number(route.query.lawyerNo),
+            lawyerName: route.query.lawyerName,
+            slotNo:     Number(route.query.slotNo),
+            slotDate:   route.query.slotDate,
+            slotTime:   route.query.slotTime
+        })
     },
 
     // ---------- 방송 ----------
