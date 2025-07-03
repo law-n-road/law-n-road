@@ -15,6 +15,7 @@ import {
 import HttpRequester from '@/libs/HttpRequester'
 import { fetchMyQnaBoards } from '@/service/boardService'
 import { getUserNo } from '@/service/authService.js'
+import BasicTable from '@/components/table/BasicTable.vue'
 
 
 // 라우터
@@ -196,7 +197,17 @@ async function testLawyerReservationCanceled() {
 /*      최근 5개 구매내역      */
 /* --------------------------- */
 
+// 최근 5개 구매내역 데이터
 const orders_rows = ref([])
+
+// 주문 내역 컬럼 정의
+const orderColumns = [
+  { label: '주문번호', key: 'orderNo' },
+  { label: '주문일자', key: 'orderDate' },
+  { label: '주문상품', key: 'firstTemplateName' },
+  { label: '총금액', key: 'amount' },
+  { label: '주문상태', key: 'status' }
+]
 
 function formatProductLabel(name, count) {
   return count > 1 ? `${name} 외 ${count - 1}건` : name
@@ -214,8 +225,8 @@ const statusClass = {
   CANCELED: 'bg-danger',  // 환불 (빨강)
 }
 
-function handleRowClick(row) {
-  if (row.status === 'CANCELED') return;
+function handleOrderRowClick(row) {
+  if (row.status === 'CANCELED') return
   router.push(`/client/template/orders/${row.orderNo}`)
 }
 
@@ -401,42 +412,69 @@ async function toggleConsultation() {
         <div class="card-header title-bg-primary text-white">템플릿 구매 내역</div>
         <div class="card-body">
 
-          <table class="table table-hover align-middle">
-            <thead class="table">
-            <tr>
-              <th scope="col">주문번호</th>
-              <th scope="col">주문일자</th>
-              <th scope="col">주문상품</th>
-              <th scope="col">총금액</th>
-              <th scope="col">주문상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr
-                v-for="row in orders_rows"
-                :key="row.orderNo"
-                style="cursor: pointer"
-                @click="handleRowClick(row)"
-            >
-              <td>{{ row.orderNo }}</td>
-              <td>{{ row.orderDate }}</td>
-              <td>{{ formatProductLabel(row.firstTemplateName, row.templateCount) }}</td>
-              <td>{{ row.amount.toLocaleString() }}원</td>
-              <td>
-            <span class="badge"
-                  :class="statusClass[row.status] || 'bg-secondary'">
-              {{ statusLabel[row.status] || row.status }}
-            </span>
-              </td>
-            </tr>
-            <tr v-if="orders_rows.length === 0">
-              <td colspan="5" class="text-muted text-center">최근 주문 내역이 없습니다.</td>
-            </tr>
-            </tbody>
-          </table>
+          <!-- BasicTable 사용 -->
+          <BasicTable
+              :columns="orderColumns"
+              :fullData="orders_rows"
+              :pageSize="5"
+              @row-click="handleOrderRowClick"
+          >
+            <template #cell-firstTemplateName="{ row, value }">
+              {{ formatProductLabel(value, row.templateCount) }}
+            </template>
+            <template #cell-amount="{ value }">
+              {{ value.toLocaleString() }}원
+            </template>
+            <template #cell-status="{ value }">
+              <span class="badge" :class="statusClass[value]">
+                {{ statusLabel[value] }}
+              </span>
+            </template>
+          </BasicTable>
 
-          <div class="text-center"><a href="/client/template/orders" class="btn small text-decoration-none">구매 내역 더보기</a>
-          </div>
+
+<!--          <table class="table table-hover align-middle">-->
+<!--            <thead class="table">-->
+<!--            <tr>-->
+<!--              <th scope="col">주문번호</th>-->
+<!--              <th scope="col">주문일자</th>-->
+<!--              <th scope="col">주문상품</th>-->
+<!--              <th scope="col">총금액</th>-->
+<!--              <th scope="col">주문상태</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr-->
+<!--                v-for="row in orders_rows"-->
+<!--                :key="row.orderNo"-->
+<!--                style="cursor: pointer"-->
+<!--                @click="handleRowClick(row)"-->
+<!--            >-->
+<!--              <td>{{ row.orderNo }}</td>-->
+<!--              <td>{{ row.orderDate }}</td>-->
+<!--              <td>{{ formatProductLabel(row.firstTemplateName, row.templateCount) }}</td>-->
+<!--              <td>{{ row.amount.toLocaleString() }}원</td>-->
+<!--              <td>-->
+<!--            <span class="badge"-->
+<!--                  :class="statusClass[row.status] || 'bg-secondary'">-->
+<!--              {{ statusLabel[row.status] || row.status }}-->
+<!--            </span>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            <tr v-if="orders_rows.length === 0">-->
+<!--              <td colspan="5" class="text-muted text-center">최근 주문 내역이 없습니다.</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+
+<!--          <div class="text-center">-->
+<!--            <router-link-->
+<!--                :to="{ name: 'TmplHistoryListView' }"-->
+<!--                class="btn small text-decoration-none"-->
+<!--            >-->
+<!--              구매 내역 더보기-->
+<!--            </router-link>-->
+<!--          </div>-->
         </div>
       </div>
 

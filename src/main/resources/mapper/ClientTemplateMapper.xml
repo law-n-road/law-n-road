@@ -288,7 +288,7 @@
         )
     </select>
 
-    <!-- 사용자 마이페이지 -> 최근 5건의 구매내역 조회 -->
+    <!-- 사용자 마이페이지  -->
     <select id="selectRecentOrders" resultType="com.lawnroad.template.dto.order.ClientOrderListDto">
         SELECT
             o.no               AS order_no,
@@ -306,7 +306,6 @@
           AND o.order_type = 'TEMPLATE'
         GROUP BY o.no, o.order_code, o.created_at, o.amount, o.status
         ORDER BY o.created_at DESC
-        LIMIT 5
     </select>
 
 </mapper>

@@ -85,7 +85,7 @@ const toggleSort = (key) => {
         <tr v-if="pagedData.length === 0">
           <td :colspan="columns.length" class="text-center">데이터가 없습니다.</td>
         </tr>
-        <tr v-for="row in pagedData" :key="row.no">
+        <tr v-for="row in pagedData" :key="row.no" @click="$emit('row-click', row)">
           <td
               v-for="col in columns"
               :key="col.key"
