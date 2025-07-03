@@ -63,7 +63,7 @@
         <div class="d-flex justify-content-end mt-4 w-100">
           <button
               class="btn btn-primary px-4 py-2 rounded"
-              :disabled="!selectedNo"
+              :disabled="!selectedSlot"
               @click="apply"
           >
             예약 신청
@@ -75,24 +75,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import {ref, onMounted, computed} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import axios from 'axios'
 import ClientFrame from '@/components/layout/client/ClientFrame.vue'
-import { getValidToken } from '@/libs/axios-auth.js'
+import {getValidToken} from '@/libs/axios-auth.js'
 
 // props
 const props = defineProps({
-  lawyerNo:   { type: Number, required: true },
-  lawyerName: { type: String, required: true }
+  lawyerNo: {type: Number, required: true},
+  lawyerName: {type: String, required: true}
 })
 
-const route       = useRoute()
-const router      = useRouter()
-const loading     = ref(true)
-const slotsFlat   = ref([])
-const selectedNo  = ref(null)
-const now         = ref(new Date())
+const route = useRoute()
+const router = useRouter()
+const loading = ref(true)
+const slotsFlat = ref([])
+const selectedSlot = ref(null)
+const now = ref(new Date())
 
 // 현재 시각을 1분마다 갱신
 setInterval(() => {
@@ -118,8 +118,8 @@ onMounted(async () => {
     const res = await axios.get(
         `/api/lawyer/${props.lawyerNo}/slots`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-          params:  { startDate: today }
+          headers: {Authorization: `Bearer ${token}`},
+          params: {startDate: today}
         }
     )
     slotsFlat.value = res.data
@@ -151,7 +151,7 @@ const weeklySlots = computed(() => groupByDate(slotsFlat.value).slice(0, 7))
 // 날짜 포맷
 function formatDate(str) {
   const d = new Date(str + 'T00:00:00')
-  return d.toLocaleDateString('ko', { month: 'long', day: 'numeric', weekday: 'short' })
+  return d.toLocaleDateString('ko', {month: 'long', day: 'numeric', weekday: 'short'})
 }
 
 // 슬롯 클래스 결정
@@ -160,7 +160,7 @@ function getSlotClass(slot) {
 
   if (slot.status !== 1 || isPast(slot)) {
     return `${baseClass} disabled-slot`
-  } else if (selectedNo.value === slot.no) {
+  } else if (selectedSlot.value?.no === slot.no) {
     return `${baseClass} selected-slot`
   } else {
     return `${baseClass} available-slot`
@@ -170,7 +170,7 @@ function getSlotClass(slot) {
 // 슬롯 선택
 function select(slot) {
   if (slot.status !== 1 || isPast(slot)) return
-  selectedNo.value = slot.no
+  selectedSlot.value = slot
 }
 
 // 예약 신청
@@ -180,51 +180,37 @@ async function apply() {
     alert('로그인이 필요합니다.')
     return
   }
-  try {
-    const token = localStorage.getItem('token')
-    const payload = {
-      slotNo:  selectedNo.value,
-      content: ''
+  const slot = selectedSlot.value
+  await router.push({
+    name: 'ClientReservationsPayment',
+    query: {
+      lawyerNo: props.lawyerNo,
+      lawyerName: props.lawyerName,
+      slotNo: slot.no,
+      slotDate: slot.slotDate,
+      slotTime: slot.slotTime,
     }
-    const { data: dto } = await axios.post(
-        `/api/client/reservations`,
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
-    )
-    await router.push({
-      name:  'ClientReservationsPayment',
-      query: {
-        orderCode:     dto.orderCode,
-        reservationNo: dto.no,
-        slotDate:      dto.slotDate,
-        slotTime:      dto.slotTime,
-        amount:        dto.amount,
-        lawyerName:    props.lawyerName
-      }
-    })
-  } catch (err) {
-    console.error(err)
-    alert('예약 신청에 실패했습니다.')
-  }
+  })
+
 }
 </script>
 
 <style scoped>
 /* 카드 컨테이너 */
 .schedule-card {
-  background-color: #ffffff;              /* 흰 배경 */
-  padding: 1rem;                          /* 안쪽 여백 */
-  border-radius: 0.75rem;                 /* 둥근 모서리 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);/* 부드러운 그림자 */
-  margin-bottom: 1rem;                    /* 카드 사이 간격 */
+  background-color: #ffffff; /* 흰 배경 */
+  padding: 1rem; /* 안쪽 여백 */
+  border-radius: 0.75rem; /* 둥근 모서리 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  margin-bottom: 1rem; /* 카드 사이 간격 */
 }
 
 /* 날짜 제목 */
 .schedule-card h3 {
-  margin: 0 0 0.75rem;                    /* 아래 여백 */
-  font-size: 1.125rem;                    /* 글자 크기 */
-  font-weight: 600;                       /* 글자 굵기 */
-  color: #2d3748;                         /* 진한 회색 */
+  margin: 0 0 0.75rem; /* 아래 여백 */
+  font-size: 1.125rem; /* 글자 크기 */
+  font-weight: 600; /* 글자 굵기 */
+  color: #2d3748; /* 진한 회색 */
 }
 
 /* 오전/오후 레이블 */
@@ -269,9 +255,9 @@ async function apply() {
 
 /* 상태별 스타일 */
 .slot-button.available-slot {
-  background-color: #ffffff !important;  /* gray-200 → gray-300 */
-  color: #4a5568 !important;             /* gray-700 */
-  border-color: #c3ced9 !important;      /* gray-600 */
+  background-color: #ffffff !important; /* gray-200 → gray-300 */
+  color: #4a5568 !important; /* gray-700 */
+  border-color: #c3ced9 !important; /* gray-600 */
 }
 
 .slot-button.available-slot:hover {
