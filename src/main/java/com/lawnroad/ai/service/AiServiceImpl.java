@@ -262,32 +262,25 @@ public class AiServiceImpl implements AiService {
   public ValidationResultDto validateTemplateContent(String content, String name, String description) {
     // Gemini에 전달할 프롬프트 생성: 6가지 기준에 대해 Yes/No로 답하게 지시
     String prompt = """
-You are evaluating a Korean legal document template. Answer each question with only "Yes" or "No".
+You are an evaluator. Please assess the following document according to the 6 criteria listed below.
 
-Evaluation Criteria:
+Answer each question with only "Yes" or "No" — nothing else.
 
-1. Inappropriate Content Check: Does the template contain clearly inappropriate, illegal, or harmful content?
-   (Legal documents about accidents, contracts, disputes are NORMAL and acceptable)
+Return exactly 6 lines in this order, each line containing only "Yes" or "No" (no extra comments or numbering).
 
-2. Topic Relevance: Is the template relevant to the stated topic: "%s"?
-   (Be generous - if somewhat related, answer Yes)
+1. Does the document contain inappropriate, harmful, or offensive content?
+2. Is the document actually relevant to the topic: "%s"?
+3. Is the grammar and clarity of the document acceptable?
+4. Does the document include accurate and factual information?
+5. Is the document well-structured and readable?
+6. Does the document contain excessive marketing or promotional content?
 
-3. Grammar and Clarity: Is the Korean grammar and structure acceptable for legal documents?
-   (Legal language can be complex - focus on basic readability)
+[Document Description]
+%s
 
-4. Factual Accuracy: Does the template contain accurate legal concepts and structure?
-   (Focus on whether legal concepts make sense, not specific facts)
-
-5. Structure and Readability: Is the document well-organized with proper legal document structure?
-   (Templates with variables like #{name} are normal)
-
-Remember: This is a TEMPLATE with variables, not a completed document.
-Legal templates about settlements, agreements, contracts are standard business documents.
-
-[Document Topic: %s]
-[Document Description: %s]
-[Template Content: %s]
-""".formatted(name, name, description, content);
+[Document Content]
+%s
+""".formatted(name, description, content);
     
     try {
       GenerateContentResponse response = client.models.generateContent("gemini-2.0-flash", prompt, null);
