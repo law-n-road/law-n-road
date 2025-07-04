@@ -207,4 +207,29 @@ public class PaymentController {
             }
         }
     }
+
+    @PostMapping("/cancel-reservation")
+    @Transactional
+    public ResponseEntity<Map<String,String>> cancelReservationOnly(
+            @RequestBody Map<String, Long> req  // { "reservationNo": 123 }
+    ) {
+        Long reservationNo = req.get("reservationNo");
+        if (reservationNo == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "reservationNo가 필요합니다."));
+        }
+        // 1) 예약 레코드 상태만 CANCELED
+        reservationsMapper.updateReservationStatus(reservationNo, "CANCELED");
+        // 2) 슬롯도 원복
+        timeSlotMapper.resetSlotStatusByResNo(reservationNo);
+        var res = reservationsMapper.selectReservationByNo(reservationNo);
+        if (res != null && res.getOrderNo() != null) {
+            OrdersStatusUpdateDTO upd = new OrdersStatusUpdateDTO();
+            upd.setOrderNo(res.getOrderNo());
+            upd.setStatus("CANCELED");
+            ordersService.changeStatus(upd);
+        }
+
+        return ResponseEntity.ok(Map.of("message", "예약 및 주문이 취소되었습니다."));
+    }
 }
