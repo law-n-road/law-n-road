@@ -250,33 +250,39 @@ function onThumbnailChange(e) {
           <tbody>
           <tr>
             <td>①</td>
-            <td>부적절한 내용 포함</td>
-            <td class="text-start">비속어, 혐오, 공격적 표현 포함</td>
-            <td class="text-start">중립적 표현으로 수정</td>
+            <td>부적절한 내용 포함 여부</td>
+            <td class="text-start">비속어·혐오·불법 지시 등 유해·공격적 표현 포함</td>
+            <td class="text-start">중립적이고 안전한 표현으로 수정</td>
           </tr>
           <tr>
             <td>②</td>
-            <td>주제와의 불일치</td>
-            <td class="text-start">제목/설명과 본문이 맞지 않음</td>
-            <td class="text-start">문서 내용을 주제에 맞게 작성</td>
+            <td>주제 적합성</td>
+            <td class="text-start">문서 내용이 지정된 주제와 실제로 관련 없음</td>
+            <td class="text-start">본문을 주제에 맞게 재작성</td>
           </tr>
           <tr>
             <td>③</td>
-            <td>사실성 부족</td>
-            <td class="text-start">“그때 봐서” 같은 모호한 문장 포함</td>
-            <td class="text-start">수치·조건·역할 등 구체화</td>
+            <td>문법 및 명확성</td>
+            <td class="text-start">문법 오류나 모호한 표현으로 이해 어려움</td>
+            <td class="text-start">문법 수정 및 간결하고 명확한 문장으로 개선</td>
           </tr>
           <tr>
             <td>④</td>
-            <td>과도한 홍보성</td>
-            <td class="text-start">“믿고 사세요” 같은 광고 문구</td>
-            <td class="text-start">감정 표현 제거, 객관적으로 작성</td>
+            <td>정보 정확성</td>
+            <td class="text-start">수치·판례·출처 없이 사실성 검증 불가</td>
+            <td class="text-start">신뢰할 수 있는 근거(수치·판례 등) 추가</td>
           </tr>
           <tr>
             <td>⑤</td>
-            <td>문맥/구조적 완성도 미달</td>
-            <td class="text-start">조항 없음, 흐름 없음</td>
-            <td class="text-start">제1조 등 형식적 구조로 작성</td>
+            <td>구조 및 가독성</td>
+            <td class="text-start">논리적 흐름·단락 구분·목차 부재로 읽기 어려움</td>
+            <td class="text-start">단락 나누기, 제목·목차 추가, 연결어 사용</td>
+          </tr>
+          <tr>
+            <td>⑥</td>
+            <td>홍보성 과다 여부</td>
+            <td class="text-start">과도한 할인·광고 문구나 상업적 유인 표현 포함</td>
+            <td class="text-start">광고성 문구 제거, 객관적 사실 중심 서술</td>
           </tr>
           </tbody>
         </table>

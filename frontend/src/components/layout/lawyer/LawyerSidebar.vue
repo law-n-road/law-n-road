@@ -83,6 +83,9 @@ const logout = () => {
   // ✅ 2. Axios 인증 헤더 제거
   delete axios.defaults.headers.common['Authorization']
 
+  // ✅ 3. Pinia 상태 초기화
+  store.reset()
+
   // ✅ 4. 콘솔 로그 출력: 삭제 여부 확인
   console.log('[로그아웃 완료] localStorage 상태 확인:')
   console.log('token:', localStorage.getItem('token'))

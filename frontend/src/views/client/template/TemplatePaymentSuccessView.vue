@@ -48,8 +48,8 @@ onMounted(async () => {
       orderId
     })
 
-    alert("결제가 완료되었습니다. 주문내역으로 넘어갑니다.")
-    return window.location.href = `/client/template/orders`
+    alert("결제가 완료되었습니다. 마이페이지로 넘어갑니다.")
+    return window.location.href = `/client/mypage`
   } catch (e) {
     error.value =
         e.response?.data?.message ||
