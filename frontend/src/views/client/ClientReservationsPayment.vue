@@ -9,10 +9,6 @@
         <p class="mb-2"><strong>예약 시간:</strong> {{ formattedTime }}</p>
         <p class="mb-2"><strong>담당 변호사:</strong> {{ props.lawyerName }}</p>
 
-        <p>
-          결제 완료 시 예약이 확정되며, 환불은 예약 시간 1시간 전까지 가능합니다.
-        </p>
-
         <button
             class="btn btn-primary w-full"
             @click="handlePayFlow"
