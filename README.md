@@ -1,18 +1,66 @@
 # 🚀 Law-n-Road 프로젝트 README
+---
+## 🚗 프로젝트 소개
+교통사고, 음주운전, 무면허 운전, 뺑소니 등 도로 위에서
+누구나 겪을 수 있는 다양한 **법적 문제는 일상 속에서 예고 없이 발생**할 수 있습니다.
+
+로앤로드는 이러한 어려움에 처한 이용자의
+**진입장벽을 낮추기 위해 기획된 플랫폼**입니다.
 
 ---
+## 프로젝트 기획안
+- [프로젝트 기획안](https://docs.google.com/document/d/1mc-cUZOW-KYeat83JRVeV2M-NRAJdS7S/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
 
-## ⚙️ 개발 환경 (로컬)
+---
+## 멤버 및 역할 소개
+| 이름    | 역할            |
+|---------|-----------------|
+| 박건희  | 팀장, UIUX, 템플릿, 광고             |
+| 강창선  | 예약, 주문, 결제       |
+| 방민영  | 실시간 채팅, 사전질문        |
+| 서민성  | 라이브 방송, 방송 스케줄, 방송 다시보기        |
+| 이정수  | 회원가입, 로그인, 관리자 승인        |
+| 정유진  | 법률 Q&A, chatbot, 대시보드        |
+
+---
+## ⚙️ 기술 스택
+### Tech
 - **Java** 17
 - **Spring Boot** 3.3.12
+- **Spring Security**
 - **Vue.js**
+- **WebRTC & OpenVidu**
+- **WebSocket**
+- **Stomp**
+- **Redis**
+- **Docker & Docker Compose**
+- **NCP (Naver Cloud Platform)**
+
+### DB
 - **MySQL** 8.0
 - **MongoDB**
-- **Redis**
-- **WebRTC & OpenVidu**
-- **Docker & Docker Compose**
+
+### IDE
+- **IntelliJ IDEA**
+- **Docker Desktop**
+- **Termius**
+
+### 협업 툴
+- **Slack**
+- **Github**
+- **Notion**
+- **Excalidraw**
+- **ERD cloud**
+- **Google Drive**
 
 ---
+## 프로젝트 설계
+- [기능 명세서](https://docs.google.com/spreadsheets/d/1mXwbnh3IuJrlLThekPflOxNzQJKnhls7/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
+- [API 명세서](https://docs.google.com/spreadsheets/d/1uew40dinu_D6sRUtGRDv19p9Y2DdRD8-/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
+- [화면 정의서](https://drive.google.com/file/d/1n2KuYMtESO0OYgtiRpHilFUu7exAS7q2/view?usp=sharing)
+
+- **ERD 다이어그램**
+  
 
 ## 🛠️ 로컬 환경 구성
 
