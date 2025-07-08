@@ -8,11 +8,11 @@
 **진입장벽을 낮추기 위해 기획된 플랫폼**입니다.
 
 ---
-## 프로젝트 기획안
+## 📃 프로젝트 기획안
 - [프로젝트 기획안](https://docs.google.com/document/d/1mc-cUZOW-KYeat83JRVeV2M-NRAJdS7S/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
 
 ---
-## 멤버 및 역할 소개
+## 👥 멤버 및 역할 소개
 | 이름    | 역할            |
 |---------|-----------------|
 | 박건희  | 팀장, UIUX, 템플릿, 광고             |
@@ -24,7 +24,7 @@
 
 ---
 ## ⚙️ 기술 스택
-### Tech
+### 🛠 Tech
 - **Java** 17
 - **Spring Boot** 3.3.12
 - **Spring Security**
@@ -36,16 +36,16 @@
 - **Docker & Docker Compose**
 - **NCP (Naver Cloud Platform)**
 
-### DB
+### 🗄 DB
 - **MySQL** 8.0
 - **MongoDB**
 
-### IDE
+### 💻 IDE
 - **IntelliJ IDEA**
 - **Docker Desktop**
 - **Termius**
 
-### 협업 툴
+### 🤜🤛 협업 툴
 - **Slack**
 - **Github**
 - **Notion**
@@ -54,13 +54,14 @@
 - **Google Drive**
 
 ---
-## 프로젝트 설계
+## 📝 프로젝트 설계
 - [기능 명세서](https://docs.google.com/spreadsheets/d/1mXwbnh3IuJrlLThekPflOxNzQJKnhls7/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
 - [API 명세서](https://docs.google.com/spreadsheets/d/1uew40dinu_D6sRUtGRDv19p9Y2DdRD8-/edit?usp=sharing&ouid=107361260590998920399&rtpof=true&sd=true)
 - [화면 정의서](https://drive.google.com/file/d/1n2KuYMtESO0OYgtiRpHilFUu7exAS7q2/view?usp=sharing)
 
 - **ERD 다이어그램**
-  
+  ![image](https://github.com/user-attachments/assets/050acf32-19ea-4b9d-8179-899de1a88e73)
+  [ERD cloud]()
 
 ## 🛠️ 로컬 환경 구성
 
