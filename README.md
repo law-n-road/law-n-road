@@ -1,6 +1,6 @@
-# 🚀 Law-n-Road 프로젝트 README
+# 🚗 Law-n-Road 프로젝트 (신세계 I&C 최종 프로젝트 `도로의 판정단` 팀)
 ---
-## 🚗 프로젝트 소개
+## 📌 프로젝트 소개
 교통사고, 음주운전, 무면허 운전, 뺑소니 등 도로 위에서
 누구나 겪을 수 있는 다양한 **법적 문제는 일상 속에서 예고 없이 발생**할 수 있습니다.
 
@@ -45,7 +45,7 @@
 - **Docker Desktop**
 - **Termius**
 
-### 🤜🤛 협업 툴
+### 🤝 협업 툴
 - **Slack**
 - **Github**
 - **Notion**
@@ -62,6 +62,10 @@
 - **ERD 다이어그램**
   ![image](https://github.com/user-attachments/assets/050acf32-19ea-4b9d-8179-899de1a88e73)
   [ERD cloud]()
+
+- **아키텍쳐 구조**
+  ![image](https://github.com/user-attachments/assets/253fb141-6950-4f6b-a9eb-1494a06ab6e8)
+
 
 ## 🛠️ 로컬 환경 구성
 
