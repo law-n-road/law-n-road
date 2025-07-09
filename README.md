@@ -15,12 +15,12 @@
 ## 👥 멤버 및 역할 소개
 | 이름    | 역할            |
 |---------|-----------------|
-| 박건희  | 팀장, UIUX, 템플릿, 광고             |
-| 강창선  | 예약, 주문, 결제, Cloud       |
-| 방민영  | 실시간 채팅, 사전질문        |
-| 서민성  | 라이브 방송, 방송 스케줄, 방송 다시보기        |
-| 이정수  | 회원가입, 로그인, 관리자 승인        |
-| 정유진  | 법률 Q&A, chatbot, 대시보드        |
+| [박건희](https://github.com/psns0122)  | 팀장, UIUX, 템플릿, 광고             |
+| [강창선](https://github.com/KangChangSeon)  | 예약, 주문, 결제, Cloud       |
+| [방민영](https://github.com/My-Bang)  | 실시간 채팅, 사전질문        |
+| [서민성](https://github.com/sminseong)  | 라이브 방송, 방송 스케줄, 방송 다시보기        |
+| [이정수](https://github.com/dlwjdtn1112)  | 회원가입, 로그인, 관리자 승인        |
+| [정유진](https://github.com/yujini02)  | 법률 Q&A, chatbot, 대시보드        |
 
 ---
 ## ⚙️ 기술 스택
