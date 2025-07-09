@@ -61,7 +61,7 @@
 
 - **ERD 다이어그램**
   ![image](https://github.com/user-attachments/assets/050acf32-19ea-4b9d-8179-899de1a88e73)
-  [ERD cloud]()
+  [ERD cloud](https://www.erdcloud.com/d/EEX5kxToeHDtKrTsH)
 
 - **아키텍쳐 구조**
   ![image](https://github.com/user-attachments/assets/253fb141-6950-4f6b-a9eb-1494a06ab6e8)
